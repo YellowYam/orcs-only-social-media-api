@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const reactionSchema = require('./Reaction');
+const thoughtSchema = require('./Thought');
 
 // Schema to create User model
 const userSchema = new Schema(
@@ -13,12 +14,18 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      required: true,
       unique: true,
-      // TODO: Add email validation
+      // Email validation
+      validate: {
+        validator: function (v) {
+          return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
+        },
+        message: "Please enter a valid email"
+      },
+      required: [true, "Email required"]
     },
-    thoughts: [/* TODO: References thought model object ids*/], 
-    friends: [/* TODO: References friend model object ids*/],
+    thoughts: [thoughtSchema],
+    friends: [userSchema],
   },
   {
     toJSON: {
@@ -26,8 +33,14 @@ const userSchema = new Schema(
       getters: true,
     },
   }
-  // TODO: Include virtual to return friend count on query
+ 
 );
+
+ //Virtual to return friend count on query
+userSchema.virtual('friendCount').get(function () {
+  return this.friends.length;
+});
+
 
 const User = model('user', userSchema);
 

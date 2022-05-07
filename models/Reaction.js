@@ -19,7 +19,7 @@ const reactionSchema = new Schema(
       type: Date,
       default: Date.now,
     },
-    // TODO: Getter method to transform date on query
+  
   },
   {
     toJSON: {
@@ -28,5 +28,12 @@ const reactionSchema = new Schema(
     id: false,
   }
 );
+
+//Getter method to transform date on query
+reactionSchema
+  .virtual('getReactionDate')
+  .get(function () {
+    return `createdAt: ${this.createdAt.toDateString()}`;
+  });
 
 module.exports = reactionSchema;
