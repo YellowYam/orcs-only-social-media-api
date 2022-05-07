@@ -3,23 +3,22 @@ const { ObjectId } = require('mongoose').Types;
 const { User, Course } = require('../models');
 
 // TODO: Create an aggregate function to get the number of users overall
-// const userCount = async () =>
-//   User.aggregate(
-//     // Your code here
-//     [
-//       {
-//         $group: {
-//           // Group by null (no additional grouping by id)
-//           _id: null,
-//           // Sum of all users
-//           numberOfUsers: { $sum: 1 },
-//         },
-//       },
+ const userCount = async () =>
+   User.aggregate(
+      [
+        {
+          $group: {
+           // Group by null (no additional grouping by id)
+          _id: null,
+           // Sum of all users
+          numberOfUsers: { $sum: 1 },
+         },
+       },
   
     
-//     ] 
-//   )
-//     .then((numberOfUsers) => numberOfUsers);
+     ] 
+   )
+     .then((numberOfUsers) => numberOfUsers);
 
 // // Execute the aggregate method on the User model and calculate the overall grade by using the $avg operator
 // const grade = async (userId) =>
@@ -57,7 +56,7 @@ module.exports = {
       .then(async (users) => {
         const userObj = {
           users,
-          headCount: await headCount(),
+          userCount: await userCount(),
         };
         return res.json(userObj);
       })
