@@ -2,7 +2,7 @@
 const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
 
-// TODO: Create an aggregate function to get the number of users overall
+// An aggregate function to get the number of users overall
  const userCount = async () =>
    User.aggregate(
       [
@@ -19,34 +19,6 @@ const { User, Thought } = require('../models');
      ] 
    )
      .then((numberOfUsers) => numberOfUsers);
-
-// // Execute the aggregate method on the User model and calculate the overall grade by using the $avg operator
-// const grade = async (userId) =>
-//   User.aggregate([
-//     // TODO: Ensure we include only the user who can match the given ObjectId using the $match operator
-//     {
-//       // Your code here
-//       // Filter user by id
-//       $match: { _id: ObjectId(userId) } 
-//     },
-//     {
-//       $unwind: '$reactions',
-//     },
-//     // TODO: Group information for the user with the given ObjectId alongside an overall grade calculated using the $avg operator
-//     {
-//       // Your code here
-//       $group: {
-//         // Group by null (no additional grouping by id)
-//         _id: null,
-//         // Average of all scores
-//         avg_score: { $avg: '$reactions.score' },
-//         // Maximum price
-//         max_score: { $max: '$reactions.score' },
-//         // Minimum price
-//         min_score: { $min: '$reactions.score' },
-//       },
-//     },
-//   ]);
   
 
 module.exports = {
@@ -73,10 +45,7 @@ module.exports = {
       .then(async (user) =>
         !user
           ? res.status(404).json({ message: 'No user with that ID' })
-          : res.json({
-              user,
-              grade: await grade(req.params.userId),
-            })
+          : res.json({user})
       )
       .catch((err) => {
         console.log(err);
@@ -92,22 +61,25 @@ module.exports = {
   // Delete a user and remove thoughts
   deleteUser(req, res) {
     User.findOneAndRemove({ _id: req.params.userId })
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: 'No such user exists' })
-          : Thought.find(
-              { username: req.params.userId },
-              { $pull: { username: req.params.userId } },
-              { new: true }
+      .then((user) => {
+        console.log(user);
+        if(!user){
+           res.status(404).json({ message: 'No such user exists' })
+        }
+        
+        return Thought.deleteMany(
+              { username: user.username },
             )
+          }
       )
-      .then((thought) =>
+      .then((thought) => {
+      console.log(thought);
         !thought
           ? res.status(404).json({
               message: 'User deleted, but no thoughts found',
             })
           : res.json({ message: 'User successfully deleted' })
-      )
+          })
       .catch((err) => {
         console.log(err);
         res.status(500).json(err);
