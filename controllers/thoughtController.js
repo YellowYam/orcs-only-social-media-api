@@ -1,4 +1,5 @@
-const { Thought, User } = require('../models');
+const { ObjectId } = require('mongoose').Types;
+const { Thought, User, Reaction } = require('../models');
 
 module.exports = {
   // Get all thoughts
@@ -18,24 +19,25 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // Create a thought
-  createThought(req, res) {
-    Thought.create(req.body)
-      .then((thought) => res.json(thought))
-      .catch((err) => {
-        console.log(err);
-        return res.status(500).json(err);
-      });
-  },
+    // add thought
+    createThought(req, res) {
+      Thought.create(req.body)
+        .then((thought) => {
+          return User.findOneAndUpdate(  
+            { _id: req.body.userId },
+            { $push: { thoughts: thought._id } },
+            { new: true }
+          );
+        })
+        .then( thought =>
+          res.json(thought)
+          )
+        .catch(err => res.json(err));
+    },
   // Delete a thought
   deleteThought(req, res) {
     Thought.findOneAndDelete({ _id: req.params.thoughtId })
-      .then((thought) =>
-        !thought
-          ? res.status(404).json({ message: 'No thought with that ID' })
-          : User.deleteMany({ _id: { $in: thought.users } })
-      )
-      .then(() => res.json({ message: 'Thought and users deleted!' }))
+      .then(() => res.json({ message: 'Thought deleted!' }))
       .catch((err) => res.status(500).json(err));
   },
   // Update a thought
