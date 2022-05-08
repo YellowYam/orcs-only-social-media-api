@@ -33,7 +33,7 @@ const reactionSchema = new Schema(
 reactionSchema
   .virtual('getReactionDate')
   .get(function () {
-    return `createdAt: ${this.createdAt.toDateString()}`;
+    return `${this.createdAt.toDateString()}`;
   });
 
 module.exports = reactionSchema;
