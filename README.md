@@ -4,11 +4,12 @@
 A noSQL database API for a ficticious social media site.
 
 ## TOC
-  1. [Installation](#installation)   
-  2. [Usage](#usage)                 
-  3. [Contributors](#contributors)
-  4. [Tests](#tests)
-  5. [Questions](#questions)
+  1. [Installation](#installation)  
+  2. [Technologies](#technologies) 
+  3. [Usage](#usage)                 
+  4. [Contributors](#contributors)
+  5. [Tests](#tests)
+  6. [Questions](#questions)
 
 ## Installation
   ***
@@ -20,11 +21,17 @@ A noSQL database API for a ficticious social media site.
   $ cd ../path/to/the/file
   $ npm install
   ``` 
+## Technologies
+* [Mongoose](https://www.npmjs.com/package/mongoose) -- MongoDB object modeling tool
+* [Express.js](https://www.npmjs.com/package/express) -- web application framework
+* [Node.js](https://nodejs.dev) -- javascript runtime environment
+* [Insomnia](https://insomnia.rest/) -- API client and design tool
 
 ## Usage
-1. Run <code> npm install </code> to install node packages.
-2. Run <code> npm start </code> to inititalize server on the local host.
-3. Open insomnia and send requests to the server API.
+1. Run <code> npm start </code> to inititalize server on the local host.
+2. Open insomnia and send requests to the server API.
+
+#### [A Walkthrough Video](https://google.com) is available.
 
 ## Contributors
   If you would like to become a contributor on this project, please find my contact information in the [questions](#questions)
