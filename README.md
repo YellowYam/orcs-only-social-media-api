@@ -31,7 +31,7 @@ A noSQL database API for a ficticious social media site.
 1. Run <code> npm start </code> to inititalize server on the local host.
 2. Open insomnia and send requests to the server API.
 
-#### [A Walkthrough Video](https://google.com) is available.
+#### [A Walkthrough Video](https://drive.google.com/file/d/1DC1AHd1rhhia5QyKKkdi7IekMnDnvlU3/view) is available.
 
 ## Contributors
   If you would like to become a contributor on this project, please find my contact information in the [questions](#questions)
